@@ -11,19 +11,32 @@ import { Button } from "../ui/button";
 import { useGoogleLogin } from "@react-oauth/google";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import axios from "axios";
+import { useMutation } from "convex/react";
+import uuid4 from "uuid4";
+import { api } from "@/convex/_generated/api";
 
 const SignInDialog = ({ openDialog, closeDialog }) => {
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
-
+  const CreateUser = useMutation(api.users.CreateUser);
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log(tokenResponse);
+      // console.log(tokenResponse);
       const userInfo = await axios.get(
         "https://www.googleapis.com/oauth2/v3/userinfo",
         { headers: { Authorization: "Bearer " + tokenResponse?.access_token } }
       );
 
-      console.log(userInfo);
+      // console.log(userInfo);
+      const user = userInfo.data;
+      await CreateUser({
+        name: user?.name,
+        email: user?.email,
+        picture: user?.picture,
+        uid: uuid4(),
+      });
+      if (typeof window !== undefined) {
+        localStorage.setItem("user", JSON.stringify(user));
+      }
       setUserDetail(userInfo?.data);
       // Save this inside our database
       closeDialog(false);
