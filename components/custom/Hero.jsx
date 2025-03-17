@@ -8,21 +8,32 @@ import { Link } from "lucide-react";
 import { ArrowRight } from "lucide-react";
 import React, { useContext, useState } from "react";
 import SignInDialog from "./SignInDialog";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { useRouter } from "next/navigation";
 
 const Hero = () => {
+  const router = useRouter();
   const [userInput, setUserInput] = useState();
   const { messages, setMessages } = useContext(MessagesContext);
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const [openDialog, setOpenDialog] = useState(false);
-  const onGenerate = (input) => {
+  const CreateWorkspace = useMutation(api.workspace.CreateWorkspace);
+  const onGenerate = async (input) => {
     if (!userDetail?.name) {
       setOpenDialog(true);
       return;
     }
-    setMessages({
+    const msg = {
       role: "user",
       content: input,
+    };
+    setMessages(msg);
+    const workspaceId = await CreateWorkspace({
+      user: userDetail._id,
+      messages: [msg],
     });
+    router.push(`/workspace/${workspaceId}`);
   };
 
   return (
@@ -58,7 +69,7 @@ const Hero = () => {
             <h2
               key={index}
               className="p-1 px-2 border rounded-full text-sm text-gray-400 hover:text-white cursor-pointer"
-              onClick={() => onGenerate(suggestion)}
+              onClick={() => setUserInput(suggestion)}
             >
               {suggestion}
             </h2>
