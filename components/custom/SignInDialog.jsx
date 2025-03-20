@@ -48,21 +48,22 @@ const SignInDialog = ({ openDialog, closeDialog }) => {
     <Dialog open={openDialog} onOpenChange={closeDialog}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle></DialogTitle>
+          <DialogTitle className="font-bold text-2xl text-center text-white">
+            {Lookup.SIGNIN_HEADING}
+          </DialogTitle>
           <DialogDescription>
-            <div className="flex flex-col items-center justify-center gap-3">
-              <h2 className="font-bold text-2xl text-center text-white">
-                {Lookup.SIGNIN_HEADING}
-              </h2>
-              <p className="mt-2 text-center">{Lookup.SIGNIN_SUBHEADING}</p>
+            <span className="flex flex-col items-center justify-center gap-3">
+              <span className="mt-2 text-center">
+                {Lookup.SIGNIN_SUBHEADING}
+              </span>
               <Button
                 className="bg-blue-500 text-white hover:bg-blue-400 mt-3"
                 onClick={googleLogin}
               >
                 Sign In with Google
               </Button>
-              <p>{Lookup.SIGNIn_AGREEMENT_TEXT}</p>
-            </div>
+              <span>{Lookup.SIGNIn_AGREEMENT_TEXT}</span>
+            </span>
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

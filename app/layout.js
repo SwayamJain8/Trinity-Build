@@ -1,11 +1,11 @@
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
+import { Provider } from "@/app/provider";
 import Header from "@/components/custom/Header";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 
 export const metadata = {
-  title: "",
-  description: "",
+  title: "Trinity",
+  description: "Trinity Website Builder",
 };
 
 export default function RootLayout({ children }) {
@@ -13,15 +13,10 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <body cz-shortcut-listen="true">
         <ConvexClientProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
+          <Provider>
             <Header />
             {children}
-          </ThemeProvider>
+          </Provider>
         </ConvexClientProvider>
       </body>
     </html>

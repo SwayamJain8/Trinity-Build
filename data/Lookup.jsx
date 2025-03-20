@@ -3,7 +3,7 @@ export default {
     "Create ToDo App in React",
     "Create Budget Track App",
     "Create Gym Managment Portal Dashboard",
-    "Create Quizz App On History",
+    "Create Quiz App On History",
     "Create Login Signup Screen",
   ],
   HERO_HEADING: "What do you want to build?",

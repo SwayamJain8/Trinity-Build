@@ -8,23 +8,25 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useConvex } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
-export function ThemeProvider({ children, ...props }) {
+export function Provider({ children, ...props }) {
   const [messages, setMessages] = React.useState();
   const [userDetail, setUserDetail] = React.useState();
   const convex = useConvex();
 
   React.useEffect(() => {
     IsAuthenticated();
-  }, []);
+  }, [userDetail]);
 
   const IsAuthenticated = async () => {
     if (typeof window !== undefined) {
       const user = JSON.parse(localStorage.getItem("user"));
-      const result = await convex.query(api.users.GetUser, {
-        email: user?.email,
-      });
-      setUserDetail(result);
-      console.log(result);
+      if (user) {
+        const result = await convex.query(api.users.GetUser, {
+          email: user?.email,
+        });
+        setUserDetail(result);
+        // console.log(result);
+      }
     }
   };
 
@@ -34,7 +36,14 @@ export function ThemeProvider({ children, ...props }) {
     >
       <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
         <MessagesContext.Provider value={{ messages, setMessages }}>
-          <NextThemesProvider {...props}>{children}</NextThemesProvider>
+          <NextThemesProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </NextThemesProvider>
         </MessagesContext.Provider>
       </UserDetailContext.Provider>
     </GoogleOAuthProvider>
