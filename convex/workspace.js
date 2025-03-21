@@ -26,3 +26,18 @@ export const GetWorkspace = query({
     return workspace;
   },
 });
+
+export const UpdateMessages = mutation({
+  args: {
+    workspaceId: v.id("workspace"),
+    messages: v.any(),
+    // fileData: v.optional(v.any()),
+  },
+  handler: async (ctx, args) => {
+    const result = await ctx.db.patch(args.workspaceId, {
+      messages: args.messages,
+      // fileData: args.fileData,
+    });
+    return result;
+  },
+});
