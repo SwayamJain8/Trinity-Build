@@ -8,7 +8,7 @@ import {
 import Image from "next/image";
 import WorkspaceHistory from "./WorkspaceHistory";
 import { Button } from "../ui/button";
-import { MessageCircleCode } from "lucide-react";
+import { History, MessageCircleCode } from "lucide-react";
 import SideBarFooter from "./SideBarFooter";
 import Link from "next/link";
 
@@ -25,7 +25,10 @@ export function AppSidebar() {
             <MessageCircleCode /> Start New Chat{" "}
           </Button>
         </Link>
-        <h2 className="font-medium text-lg pt-3 pl-0.5">Your Chats</h2>
+        <div className="flex items-center gap-2 mt-4 pt-4 pl-0.5 border-t-2">
+          <History className="w-5 h-5" />
+          <h2 className="font-medium text-md "> Chat History</h2>
+        </div>
       </SidebarHeader>
       <SidebarContent className="pl-4 pr-3 scrollbar-hide">
         <SidebarGroup>

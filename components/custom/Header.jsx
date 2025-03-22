@@ -38,8 +38,11 @@ const Header = () => {
   });
 
   return (
-    <div className="p-4 px-5 flex justify-between items-center fixed top-0 left-0 right-0 z-50">
+    <div className="py-4 pl-5 pr-8 flex justify-between items-center fixed top-0 left-0 right-0 z-50">
       <Image src={"/logo.png"} alt="logo" width="50" height="50" />
+      <h1 className="text-3xl font-bold italic text-slate-500 ml-30 tracking-widest">
+        <span className="text-slate-100">Trinity </span>Build
+      </h1>
       <div className="flex gap-5">
         {!userDetail?.name ? (
           <>
@@ -55,7 +58,7 @@ const Header = () => {
             </Button>
           </>
         ) : (
-          <div className="flex gap-5">
+          <div className="flex gap-3">
             <Button
               variant={"ghost"}
               className="text-white cursor-pointer bg-slate-800"
@@ -69,6 +72,15 @@ const Header = () => {
               <LogOut />
               Sign Out
             </Button>
+            {userDetail?.picture && (
+              <Image
+                src={userDetail?.picture}
+                alt="profile"
+                width="40"
+                height="40"
+                className="rounded-full border-2 border-slate-500"
+              />
+            )}
           </div>
         )}
       </div>

@@ -13,6 +13,7 @@ import { useParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useSidebar } from "../ui/sidebar";
+import { Button } from "../ui/button";
 
 export const countToken = (inputText) => {
   return inputText
@@ -29,8 +30,6 @@ const ChatView = () => {
   const [userInput, setUserInput] = useState();
   const [loading, setLoading] = useState(false);
   const UpdateMessages = useMutation(api.workspace.UpdateMessages);
-  const { toggleSidebar } = useSidebar();
-  const UpdateToken = useMutation(api.users.UpdateToken);
 
   useEffect(() => {
     id && GetWorkspaceData();
@@ -41,8 +40,6 @@ const ChatView = () => {
       workspaceId: id,
     });
     setMessages(result?.messages);
-    // console.log(result);
-    // console.log(result?.messages);
   };
 
   useEffect(() => {
@@ -79,12 +76,12 @@ const ChatView = () => {
       ],
     });
 
-    const token = Number(userDetail?.token) - Number(token);
-    // Update token in database
-    await UpdateToken({
-      userId: userDetail?.id,
-      token: token,
-    });
+    // const token = Number(userDetail?.token) - Number(token);
+    // // Update token in database
+    // await UpdateToken({
+    //   userId: userDetail?.id,
+    //   token: token,
+    // });
 
     setLoading(false);
   };
@@ -104,27 +101,28 @@ const ChatView = () => {
     <div className="relative h-[83vh] flex flex-col">
       {" "}
       {/* Height modified - 85 */}
-      <div className="flex-1 overflow-y-scroll scrollbar-hide ml-[37px]">
-        {messages?.map((msg, idx) => (
-          <div
-            key={idx}
-            className="p-3 rounded-lg mb-2 flex gap-2 items-center leading-7"
-            style={{ backgroundColor: Colors.CHAT_BACKGROUND }}
-          >
-            {msg.role == "user" && (
-              <Image
-                src={userDetail?.picture}
-                alt="userImage"
-                width={35}
-                height={35}
-                className="rounded-full"
-              />
-            )}
-            <div className="flex flex-col">
-              <ReactMarkdown>{msg.content}</ReactMarkdown>
+      <div className="flex-1 overflow-y-scroll scrollbar-hide ml-[29px]">
+        {messages?.length > 0 &&
+          messages?.map((msg, idx) => (
+            <div
+              key={idx}
+              className="p-3 rounded-lg mb-2 flex gap-2 items-center leading-7"
+              style={{ backgroundColor: Colors.CHAT_BACKGROUND }}
+            >
+              {msg.role == "user" && (
+                <Image
+                  src={userDetail?.picture}
+                  alt="userImage"
+                  width={35}
+                  height={35}
+                  className="rounded-full"
+                />
+              )}
+              <div className="flex flex-col">
+                <ReactMarkdown>{msg.content}</ReactMarkdown>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
         {loading && (
           <div
             className="p-3 rounded-lg mb-2 flex gap-2 items-center"
@@ -135,8 +133,8 @@ const ChatView = () => {
           </div>
         )}
       </div>
-      <div className="flex gap-2 items-end">
-        {userDetail && (
+      <div className="flex">
+        {/* {userDetail && (
           <Image
             src={userDetail?.picture}
             alt="userImage"
@@ -145,10 +143,10 @@ const ChatView = () => {
             className="rounded-full cursor-pointer"
             onClick={toggleSidebar}
           />
-        )}
+        )} */}
 
         <div
-          className="p-5 border rounded-xl max-w-xl w-full mt-3"
+          className="p-5 border rounded-xl max-w-xl w-full mt-3 ml-7"
           style={{ backgroundColor: Colors.BACKGROUND }}
         >
           <div className="flex gap-2">
@@ -159,14 +157,14 @@ const ChatView = () => {
               value={userInput}
             />
             {userInput && (
-              <ArrowRight
-                className="bg-blue-500 p-2 h-10 w-10 rounded-md cursor-pointer"
+              <Button
+                variant="ghost"
+                className="bg-slate-800 p-2 h-10 w-10 rounded-md cursor-pointer"
                 onClick={() => onGenerate(userInput)}
-              />
+              >
+                <ArrowRight />
+              </Button>
             )}
-          </div>
-          <div>
-            <Link className="h-5 w-5" />
           </div>
         </div>
       </div>
