@@ -59,6 +59,15 @@ const Header = () => {
           </>
         ) : (
           <div className="flex gap-3">
+            {userDetail?.picture && (
+              <Image
+                src={userDetail?.picture}
+                alt="profile"
+                width="40"
+                height="40"
+                className="rounded-full border-2 border-slate-700"
+              />
+            )}
             <Button
               variant={"ghost"}
               className="text-white cursor-pointer bg-slate-800"
@@ -72,15 +81,6 @@ const Header = () => {
               <LogOut />
               Sign Out
             </Button>
-            {userDetail?.picture && (
-              <Image
-                src={userDetail?.picture}
-                alt="profile"
-                width="40"
-                height="40"
-                className="rounded-full border-2 border-slate-700"
-              />
-            )}
           </div>
         )}
       </div>

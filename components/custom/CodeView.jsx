@@ -83,7 +83,6 @@ const CodeView = () => {
       </div>
 
       <SandpackProvider
-        autorun={false}
         template="react"
         theme={"dark"}
         files={files}
@@ -94,17 +93,33 @@ const CodeView = () => {
           ],
           resizablePanels: true,
         }}
+        style={{
+          height: "75vh",
+          width: "100%",
+        }}
       >
         <SandpackLayout>
           {activeTab === "code" && (
             <>
               <SandpackFileExplorer style={{ height: "75vh" }} />
-              {/* <SandpackCodeEditor style={{ height: "75vh" }} /> */}
-              <MonacoEditor />
+              <SandpackCodeEditor
+                style={{ height: "75vh" }}
+                showTabs
+                showLineNumbers={true}
+                showInlineErrors
+                wrapContent
+                closableTabs
+              />
+              {/* <MonacoEditor /> */}
             </>
           )}
           {activeTab === "preview" && (
-            <SandpackPreview style={{ height: "75vh" }} showNavigator={true} />
+            <div className="w-[100%]">
+              <SandpackPreview
+                style={{ height: "75vh", width: "100%" }}
+                showNavigator={true}
+              />
+            </div>
           )}
         </SandpackLayout>
       </SandpackProvider>

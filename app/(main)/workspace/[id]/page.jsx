@@ -6,9 +6,9 @@ import React from "react";
 const Workspace = () => {
   return (
     <div className="p-3 pr-5 mt-[80px] h-[80vh]">
-      <div className=" gap-5 flex items-center justify-center">
+      <div className="w-full gap-5 flex items-center justify-center">
         <ChatView />
-        <CodeView />
+        <CodeView className="w-full" />
       </div>
     </div>
   );
