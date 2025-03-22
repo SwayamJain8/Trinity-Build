@@ -27,7 +27,7 @@ const SignInDialog = ({ openDialog, closeDialog }) => {
       );
 
       // console.log(userInfo);
-      const user = userInfo.data;
+      const user = userInfo?.data;
       await CreateUser({
         name: user?.name,
         email: user?.email,
@@ -37,7 +37,7 @@ const SignInDialog = ({ openDialog, closeDialog }) => {
       if (typeof window !== undefined) {
         localStorage.setItem("user", JSON.stringify(user));
       }
-      setUserDetail(userInfo?.data);
+      setUserDetail(user);
       // Save this inside our database
       closeDialog(false);
     },

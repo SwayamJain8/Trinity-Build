@@ -25,21 +25,20 @@ const WorkspaceHistory = () => {
   };
 
   return (
-    <div>
-      <h2 className="font-medium text-lg">Your Chats</h2>
-      <div>
-        {workspaceList &&
-          workspaceList?.map((workspace, idx) => (
-            <Link href={`/workspace/${workspace._id}`} key={idx}>
-              <h2
-                onClick={toggleSidebar}
-                className="text-sm text-gray-400 mt-2 font-sm hover:text-white cursor-pointer"
-              >
-                {workspace?.messages[0].content}
-              </h2>
-            </Link>
-          ))}
-      </div>
+    <div className="flex flex-col justify-items-start ">
+      {workspaceList &&
+        workspaceList.map((workspace, idx) => (
+          <Link href={`/workspace/${workspace._id}`} key={idx}>
+            <h2
+              onClick={toggleSidebar}
+              className="text-sm text-gray-500 mb-2 font-semibold hover:text-white cursor-pointer"
+            >
+              {workspace?.messages[0]?.content.length > 27
+                ? workspace?.messages[0]?.content.slice(0, 27) + "..."
+                : workspace?.messages[0]?.content}
+            </h2>
+          </Link>
+        ))}
     </div>
   );
 };

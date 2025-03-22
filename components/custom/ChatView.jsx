@@ -14,6 +14,13 @@ import React, { useContext, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useSidebar } from "../ui/sidebar";
 
+export const countToken = (inputText) => {
+  return inputText
+    .trim()
+    .split(/\s+/)
+    .filter((word) => word).length;
+};
+
 const ChatView = () => {
   const { id } = useParams();
   const convex = useConvex();
@@ -23,6 +30,7 @@ const ChatView = () => {
   const [loading, setLoading] = useState(false);
   const UpdateMessages = useMutation(api.workspace.UpdateMessages);
   const { toggleSidebar } = useSidebar();
+  const UpdateToken = useMutation(api.users.UpdateToken);
 
   useEffect(() => {
     id && GetWorkspaceData();
@@ -59,6 +67,7 @@ const ChatView = () => {
         content: result.data.result,
       },
     ]);
+
     await UpdateMessages({
       workspaceId: id,
       messages: [
@@ -69,6 +78,14 @@ const ChatView = () => {
         },
       ],
     });
+
+    const token = Number(userDetail?.token) - Number(token);
+    // Update token in database
+    await UpdateToken({
+      userId: userDetail?.id,
+      token: token,
+    });
+
     setLoading(false);
   };
 

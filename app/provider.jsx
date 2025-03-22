@@ -28,7 +28,6 @@ export function Provider({ children, ...props }) {
           email: user?.email,
         });
         setUserDetail(result);
-        // console.log(result);
       }
     }
   };
@@ -46,7 +45,7 @@ export function Provider({ children, ...props }) {
             disableTransitionOnChange
           >
             <Header />
-            <SidebarProvider defaultOpen={false}>
+            <SidebarProvider defaultOpen={true}>
               <AppSidebar />
               {children}
             </SidebarProvider>

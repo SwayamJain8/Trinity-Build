@@ -23,12 +23,12 @@ const SideBarFooter = () => {
   ];
 
   return (
-    <div className="p-2 mb-10">
+    <div className="p-2 mb-2">
       {options.map((option, index) => (
         <Button
           variant="ghost"
           key={index}
-          className="w-full flex justify-start my-3"
+          className="w-full flex justify-start my-2"
         >
           <option.icon className="w-5 h-5" />
           <span className="text-sm">{option.name}</span>
