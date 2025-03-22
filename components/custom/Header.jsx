@@ -78,7 +78,7 @@ const Header = () => {
                 alt="profile"
                 width="40"
                 height="40"
-                className="rounded-full border-2 border-slate-500"
+                className="rounded-full border-2 border-slate-700"
               />
             )}
           </div>

@@ -34,7 +34,7 @@ const WorkspaceHistory = () => {
           .map((workspace, idx) => (
             <Link href={`/workspace/${workspace._id}`} key={idx}>
               <h2
-                className={`text-[15px]  mb-2 font-semibold hover:text-white cursor-pointer ${workspace._id == id ? "text-white bg-slate-800 p-1 rounded-md pl-2" : "text-gray-500"}`}
+                className={`text-[15px]  mb-2 font-semibold hover:text-white cursor-pointer ${workspace._id == id ? "text-white border-2 border-slate-700 p-1 rounded-md pl-2" : "text-gray-500"}`}
               >
                 {workspace?.messages[0]?.content.length > 27
                   ? workspace?.messages[0]?.content.slice(0, 27) + "..."
