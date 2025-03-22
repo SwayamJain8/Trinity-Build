@@ -15,6 +15,7 @@ import { useConvex, useMutation } from "convex/react";
 import { Loader2Icon } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
+import MonacoEditor from "./MonacoEditor";
 
 const CodeView = () => {
   const { id } = useParams();
@@ -63,7 +64,7 @@ const CodeView = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-[80%]">
       <div className="bg-[#181818] w-full p-2 border">
         <div className="flex items-center flex-wrap shrink-0 bg-black p-1 w-[140px] gap-3 justify-center rounded-full">
           <h2
@@ -82,6 +83,7 @@ const CodeView = () => {
       </div>
 
       <SandpackProvider
+        autorun={false}
         template="react"
         theme={"dark"}
         files={files}
@@ -90,13 +92,15 @@ const CodeView = () => {
           externalResources: [
             "https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4",
           ],
+          resizablePanels: true,
         }}
       >
         <SandpackLayout>
           {activeTab === "code" && (
             <>
               <SandpackFileExplorer style={{ height: "75vh" }} />
-              <SandpackCodeEditor style={{ height: "75vh" }} />
+              {/* <SandpackCodeEditor style={{ height: "75vh" }} /> */}
+              <MonacoEditor />
             </>
           )}
           {activeTab === "preview" && (

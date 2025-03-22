@@ -98,10 +98,10 @@ const ChatView = () => {
   };
 
   return (
-    <div className="relative h-[83vh] flex flex-col">
+    <div className="relative h-[83vh] flex flex-col w-[30%]">
       {" "}
       {/* Height modified - 85 */}
-      <div className="flex-1 overflow-y-scroll scrollbar-hide ml-[29px]">
+      <div className="flex-1 overflow-y-scroll scrollbar-hide ml-[10px]">
         {messages?.length > 0 &&
           messages?.map((msg, idx) => (
             <div
@@ -146,7 +146,7 @@ const ChatView = () => {
         )} */}
 
         <div
-          className="p-5 border rounded-xl max-w-xl w-full mt-3 ml-7"
+          className="p-5 border rounded-xl max-w-xl w-full mt-3 ml-2.5"
           style={{ backgroundColor: Colors.BACKGROUND }}
         >
           <div className="flex gap-2">
