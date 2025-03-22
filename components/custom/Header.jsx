@@ -4,6 +4,7 @@ import React, { useContext } from "react";
 import { Button } from "../ui/button";
 import Colors from "@/data/Colors";
 import { UserDetailContext } from "@/context/UserDetailContext";
+import { Download, Rocket } from "lucide-react";
 
 const Header = () => {
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
@@ -11,7 +12,7 @@ const Header = () => {
     <div className="p-4 flex justify-between items-center">
       <Image src={"/logo.png"} alt="logo" width={40} height={40} />
       <div className="flex gap-5">
-        {!userDetail?.name && (
+        {!userDetail?.name ? (
           <>
             <Button variant={"ghost"} className="cursor-pointer">
               Sign In
@@ -23,6 +24,20 @@ const Header = () => {
               Get Started
             </Button>
           </>
+        ) : (
+          <div className="flex gap-5">
+            <Button variant={"ghost"} className="cursor-pointer">
+              <Download />
+              Export
+            </Button>
+            <Button
+              className="text-white cursor-pointer"
+              style={{ backgroundColor: Colors.BLUE }}
+            >
+              <Rocket />
+              Deploy
+            </Button>
+          </div>
         )}
       </div>
     </div>

@@ -1,6 +1,5 @@
 import "./globals.css";
 import { Provider } from "@/app/provider";
-import Header from "@/components/custom/Header";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 
 export const metadata = {
@@ -13,10 +12,7 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <body cz-shortcut-listen="true">
         <ConvexClientProvider>
-          <Provider>
-            <Header />
-            {children}
-          </Provider>
+          <Provider>{children}</Provider>
         </ConvexClientProvider>
       </body>
     </html>

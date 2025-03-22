@@ -11,7 +11,7 @@ const generationConfig = {
   temperature: 1,
   topP: 0.95,
   topK: 40,
-  maxOutputTokens: 4192,
+  maxOutputTokens: 8192,
   responseMimeType: "text/plain",
 };
 
@@ -19,7 +19,7 @@ const CodeGenerationConfig = {
   temperature: 1,
   topP: 0.95,
   topK: 40,
-  maxOutputTokens: 4192,
+  maxOutputTokens: 8192,
   responseMimeType: "application/json",
 };
 
