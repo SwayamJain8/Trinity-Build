@@ -12,12 +12,14 @@ import { AppSidebar } from "@/components/custom/AppSidebar";
 import Header from "@/components/custom/Header";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { ActionContext } from "@/context/ActionContext";
+import { useRouter } from "next/navigation";
 
 export function Provider({ children, ...props }) {
   const [messages, setMessages] = React.useState();
   const [userDetail, setUserDetail] = React.useState();
   const [action, setAction] = React.useState();
   const convex = useConvex();
+  const router = useRouter();
 
   React.useEffect(() => {
     IsAuthenticated();
@@ -31,6 +33,9 @@ export function Provider({ children, ...props }) {
           email: user?.email,
         });
         setUserDetail(result);
+      } else {
+        router.push("/");
+        return;
       }
     }
   };

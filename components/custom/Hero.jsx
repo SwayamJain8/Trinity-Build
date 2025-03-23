@@ -68,7 +68,7 @@ const Hero = () => {
           )}
         </div>
       </div>
-      <div className="flex mt-8 flex-wrap max-w-2xl items-center justify-center gap-3">
+      <div className="flex mt-5 flex-wrap max-w-2xl items-center justify-center gap-3">
         {Lookup.SUGGSTIONS.map((suggestion, index) => (
           <h2
             key={index}

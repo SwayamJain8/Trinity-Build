@@ -53,7 +53,7 @@ const Header = () => {
   });
 
   return (
-    <div className="py-4 pb-2 pl-5 pr-7 flex justify-between items-center fixed top-0 left-0 right-0 z-50 border-b-2 rounded-b-3xl border-slate-500/50">
+    <div className="py-4 pb-2 pl-7 pr-7 flex justify-between items-center fixed top-0 left-0 right-0 z-50 border-b-2 rounded-b-3xl border-slate-500/50">
       <Image src={"/logo.png"} alt="logo" width="50" height="50" />
       <h1 className="text-3xl font-bold italic text-slate-500 ml-25 tracking-widest py-2 px-5 group transition-colors duration-500 ease-in-out">
         <span className="text-slate-100 group-hover:text-slate-500 transition-colors duration-500 ease-in-out">

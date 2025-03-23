@@ -60,7 +60,7 @@ const SideBarFooter = () => {
           <Button
             variant="ghost"
             key={index}
-            className="w-full flex justify-start my-3 bg-slate-800"
+            className="w-full flex justify-center my-3 bg-slate-800 cursor-pointer"
             onClick={() => optionClick(option)}
           >
             <option.icon className="w-5 h-5" />
@@ -68,11 +68,11 @@ const SideBarFooter = () => {
           </Button>
         ) : (
           option.name == "My Subscription" && (
-            <>
+            <div key={index}>
               <Button
                 variant="ghost"
                 key={index}
-                className="w-full flex justify-start my-3 bg-slate-800"
+                className="w-full flex justify-center my-3 bg-slate-800 cursor-pointer "
                 onClick={() => show(option)}
               >
                 <option.icon className="w-5 h-5" />
@@ -82,7 +82,7 @@ const SideBarFooter = () => {
                 openDialog={openDialog}
                 closeDialog={(v) => setOpenDialog(v)}
               />
-            </>
+            </div>
           )
         )
       )}
