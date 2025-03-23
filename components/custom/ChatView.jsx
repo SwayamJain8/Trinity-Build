@@ -7,7 +7,14 @@ import Lookup from "@/data/Lookup";
 import Prompt from "@/data/Prompt";
 import axios from "axios";
 import { useConvex, useMutation } from "convex/react";
-import { ArrowRight, Link, Loader, Loader2Icon } from "lucide-react";
+import {
+  ArrowRight,
+  Link,
+  Loader,
+  Loader2Icon,
+  Wand2,
+  WandSparkles,
+} from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
@@ -30,6 +37,7 @@ const ChatView = () => {
   const [userInput, setUserInput] = useState();
   const [loading, setLoading] = useState(false);
   const UpdateMessages = useMutation(api.workspace.UpdateMessages);
+  const UpdateToken = useMutation(api.users.UpdateToken);
 
   useEffect(() => {
     id && GetWorkspaceData();
@@ -49,7 +57,7 @@ const ChatView = () => {
         GetAiResponse();
       }
     }
-  }, [messages]);
+  }, [messages, userInput]);
 
   const GetAiResponse = async () => {
     setLoading(true);
@@ -76,12 +84,13 @@ const ChatView = () => {
       ],
     });
 
-    // const token = Number(userDetail?.token) - Number(token);
-    // // Update token in database
-    // await UpdateToken({
-    //   userId: userDetail?.id,
-    //   token: token,
-    // });
+    const token =
+      Number(userDetail?.token) - Number(countToken(result.data.result));
+    // Update token in database
+    await UpdateToken({
+      userId: userDetail?._id,
+      token: token,
+    });
 
     setLoading(false);
   };
@@ -98,10 +107,10 @@ const ChatView = () => {
   };
 
   return (
-    <div className="relative h-[83vh] flex flex-col w-[30%]">
+    <div className="relative h-[83vh] flex flex-col w-full">
       {" "}
       {/* Height modified - 85 */}
-      <div className="flex-1 overflow-y-scroll scrollbar-hide ml-[10px]">
+      <div className="flex-1 overflow-y-scroll scrollbar-hide ml-[2px]">
         {messages?.length > 0 &&
           messages?.map((msg, idx) => (
             <div
@@ -134,19 +143,8 @@ const ChatView = () => {
         )}
       </div>
       <div className="flex">
-        {/* {userDetail && (
-          <Image
-            src={userDetail?.picture}
-            alt="userImage"
-            width={30}
-            height={30}
-            className="rounded-full cursor-pointer"
-            onClick={toggleSidebar}
-          />
-        )} */}
-
         <div
-          className="p-5 border rounded-xl max-w-xl w-full mt-3 ml-2.5"
+          className="p-5 border rounded-xl max-w-xl w-full mt-3 ml-[2px]"
           style={{ backgroundColor: Colors.BACKGROUND }}
         >
           <div className="flex gap-2">
@@ -159,10 +157,10 @@ const ChatView = () => {
             {userInput && (
               <Button
                 variant="ghost"
-                className="bg-slate-800 p-2 h-10 w-10 rounded-md cursor-pointer"
+                className="bg-slate-800 p-5 h-10 w-10 rounded-md cursor-pointer"
                 onClick={() => onGenerate(userInput)}
               >
-                <ArrowRight />
+                <Wand2 />
               </Button>
             )}
           </div>

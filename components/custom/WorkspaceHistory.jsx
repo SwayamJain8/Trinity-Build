@@ -24,6 +24,7 @@ const WorkspaceHistory = () => {
   };
 
   const { id } = useParams();
+  const [expandedWorkspace, setExpandedWorkspace] = useState(id);
 
   return (
     <div className="flex flex-col justify-items-start">
@@ -31,17 +32,31 @@ const WorkspaceHistory = () => {
         workspaceList
           .slice()
           .reverse()
-          .map((workspace, idx) => (
-            <Link href={`/workspace/${workspace._id}`} key={idx}>
-              <h2
-                className={`text-[15px]  mb-2 font-semibold hover:text-white cursor-pointer ${workspace._id == id ? "text-white border-2 border-slate-700 p-1 rounded-md pl-2" : "text-gray-500"}`}
-              >
-                {workspace?.messages[0]?.content.length > 27
-                  ? workspace?.messages[0]?.content.slice(0, 27) + "..."
-                  : workspace?.messages[0]?.content}
-              </h2>
-            </Link>
-          ))}
+          .map((workspace, idx) => {
+            const isExpanded = expandedWorkspace === workspace._id;
+            const content = workspace?.messages[0]?.content || "";
+            const displayText =
+              isExpanded || content.length <= 21
+                ? content
+                : content.slice(0, 21) + "...";
+
+            return (
+              <Link href={`/workspace/${workspace._id}`} key={idx}>
+                <h2
+                  className={`text-[15px] mb-2 font-semibold hover:text-white cursor-pointer ${
+                    workspace._id == id
+                      ? "text-white border-2 border-slate-700 p-1 rounded-md pl-2"
+                      : "text-gray-500"
+                  }`}
+                  onClick={(e) => {
+                    setExpandedWorkspace(isExpanded ? null : workspace._id);
+                  }}
+                >
+                  {displayText}
+                </h2>
+              </Link>
+            );
+          })}
     </div>
   );
 };

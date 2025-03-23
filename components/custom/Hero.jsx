@@ -4,7 +4,7 @@ import { MessagesContext } from "@/context/MessagesContext";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import Colors from "@/data/Colors";
 import Lookup from "@/data/Lookup";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Wand2 } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import SignInDialog from "./SignInDialog";
 import { useMutation } from "convex/react";
@@ -55,10 +55,10 @@ const Hero = () => {
           {userInput && (
             <Button
               variant="ghost"
-              className="bg-slate-800 p-2 h-10 w-10 rounded-md cursor-pointer"
+              className="bg-slate-800 p-5 h-10 w-10 rounded-md cursor-pointer"
               onClick={() => onGenerate(userInput)}
             >
-              <ArrowRight />
+              <Wand2 />
             </Button>
           )}
         </div>

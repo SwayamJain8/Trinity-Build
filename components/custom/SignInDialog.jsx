@@ -14,18 +14,20 @@ import axios from "axios";
 import { useMutation } from "convex/react";
 import uuid4 from "uuid4";
 import { api } from "@/convex/_generated/api";
+import { Loader2Icon } from "lucide-react";
 
 const SignInDialog = ({ openDialog, closeDialog }) => {
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
+  const [loading, setLoading] = React.useState(false);
   const CreateUser = useMutation(api.users.CreateUser);
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
+      setLoading(true);
       // console.log(tokenResponse);
       const userInfo = await axios.get(
         "https://www.googleapis.com/oauth2/v3/userinfo",
         { headers: { Authorization: "Bearer " + tokenResponse?.access_token } }
       );
-
       // console.log(userInfo);
       const user = userInfo?.data;
       await CreateUser({
@@ -38,6 +40,7 @@ const SignInDialog = ({ openDialog, closeDialog }) => {
         localStorage.setItem("user", JSON.stringify(user));
       }
       setUserDetail(user);
+      setLoading(false);
       // Save this inside our database
       closeDialog(false);
     },
@@ -56,12 +59,16 @@ const SignInDialog = ({ openDialog, closeDialog }) => {
               <span className="mt-2 text-center">
                 {Lookup.SIGNIN_SUBHEADING}
               </span>
-              <Button
-                className="bg-blue-500 text-white hover:bg-blue-400 mt-3"
-                onClick={googleLogin}
-              >
-                Sign In with Google
-              </Button>
+              {loading ? (
+                <Loader2Icon className="animate-spin" />
+              ) : (
+                <Button
+                  className="bg-slate-900 text-white hover:bg-slate-800 mt-3 cursor-pointer"
+                  onClick={googleLogin}
+                >
+                  Sign In with Google
+                </Button>
+              )}
               <span>{Lookup.SIGNIn_AGREEMENT_TEXT}</span>
             </span>
           </DialogDescription>

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Button } from "../ui/button";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import { LogIn, LogOut } from "lucide-react";
@@ -10,6 +10,7 @@ import { api } from "@/convex/_generated/api";
 import uuid4 from "uuid4";
 
 const Header = () => {
+  const [showName, setShowName] = useState(false);
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const CreateUser = useMutation(api.users.CreateUser);
 
@@ -40,7 +41,7 @@ const Header = () => {
   return (
     <div className="py-4 pl-5 pr-8 flex justify-between items-center fixed top-0 left-0 right-0 z-50">
       <Image src={"/logo.png"} alt="logo" width="50" height="50" />
-      <h1 className="text-3xl font-bold italic text-slate-500 ml-30 tracking-widest">
+      <h1 className="text-3xl font-bold italic text-slate-500 ml-30 tracking-widest py-2 px-5  border-b-2 rounded-b-3xl border-slate-500/50">
         <span className="text-slate-100">Trinity </span>Build
       </h1>
       <div className="flex gap-5">
@@ -58,15 +59,26 @@ const Header = () => {
             </Button>
           </>
         ) : (
-          <div className="flex gap-3">
+          <div className="flex gap-3 items-center justify-center">
             {userDetail?.picture && (
-              <Image
-                src={userDetail?.picture}
-                alt="profile"
-                width="40"
-                height="40"
-                className="rounded-full border-2 border-slate-700"
-              />
+              <div
+                onMouseEnter={() => setShowName(true)}
+                onMouseLeave={() => setShowName(false)}
+                className="flex flex-col items-center justify-center"
+              >
+                {showName && (
+                  <div className="absolute mt-18 bg-slate-600/25 text-slate-300 p-1.5 px-2 rounded-full shadow-lg text-xs tracking-wide ">
+                    {userDetail?.name}
+                  </div>
+                )}
+                <Image
+                  src={userDetail?.picture}
+                  alt="profile"
+                  width="40"
+                  height="40"
+                  className="rounded-full border-2 border-slate-700"
+                />
+              </div>
             )}
             <Button
               variant={"ghost"}

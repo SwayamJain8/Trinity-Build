@@ -1,6 +1,7 @@
 "use client";
 import { MessagesContext } from "@/context/MessagesContext";
 import { api } from "@/convex/_generated/api";
+import { UpdateToken } from "@/convex/users";
 import Lookup from "@/data/Lookup";
 import Prompt from "@/data/Prompt";
 import {
@@ -15,7 +16,8 @@ import { useConvex, useMutation } from "convex/react";
 import { Loader2Icon } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
-import MonacoEditor from "./MonacoEditor";
+import { countToken } from "./ChatView";
+import { UserDetailContext } from "@/context/UserDetailContext";
 
 const CodeView = () => {
   const { id } = useParams();
@@ -24,6 +26,8 @@ const CodeView = () => {
   const { messages, setMessages } = useContext(MessagesContext);
   const [loading, setLoading] = useState(false);
   const UpdateFiles = useMutation(api.workspace.UpdateFiles);
+  const UpdateToken = useMutation(api.users.UpdateToken);
+  const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const convex = useConvex();
 
   useEffect(() => {
@@ -47,6 +51,7 @@ const CodeView = () => {
         GenerateAiCode();
       }
     }
+    setActiveTab("code");
   }, [messages]);
 
   const GenerateAiCode = async () => {
@@ -57,24 +62,41 @@ const CodeView = () => {
     });
     // console.log(result.data);
     const aiResp = result.data;
+    // console.log(JSON.stringify(aiResp)
     const mergedFiles = { ...Lookup.DEFAULT_FILE, ...aiResp?.files };
     setFiles(mergedFiles);
     await UpdateFiles({ workspaceId: id, files: aiResp?.files });
+    const token =
+      Number(userDetail?.token) - Number(countToken(JSON.stringify(aiResp)));
+    // Update token in database
+    await UpdateToken({
+      userId: userDetail?._id,
+      token: token,
+    });
+    setActiveTab("code");
     setLoading(false);
   };
 
   return (
-    <div className="relative w-[80%]">
-      <div className="bg-[#181818] w-full p-2 border">
-        <div className="flex items-center flex-wrap shrink-0 bg-black p-1 w-[140px] gap-3 justify-center rounded-full">
+    <div className="relative h-[83vh]">
+      <div className="bg-[#181818] w-full p-2 border-[0.5px] border-gray-800/50 rounded-t-md shadow-md">
+        <div className="flex items-center border-[0.5px] border-gray-800 shrink-0 bg-black/50 w-[130px] justify-center rounded-full shadow-sm">
           <h2
-            className={`text-sm cursor-pointer ${activeTab === "code" && "text-blue-500 bg-blue-500/25 p-1 px-2 rounded-full "} `}
+            className={`text-sm font-medium cursor-pointer  ${
+              activeTab === "code"
+                ? "text-white bg-slate-700 px-3 py-1 rounded-l-full shadow-md"
+                : "text-gray-400 hover:text-white px-3 py-1 rounded-full"
+            }`}
             onClick={() => setActiveTab("code")}
           >
             Code
           </h2>
           <h2
-            className={`text-sm cursor-pointer ${activeTab === "preview" && "text-blue-500 bg-blue-500/25 p-1 px-2 rounded-full "} `}
+            className={`text-sm font-medium cursor-pointer  ${
+              activeTab === "preview"
+                ? "text-white bg-slate-700 px-3 py-1 rounded-r-full  shadow-md"
+                : "text-gray-400 hover:text-white px-3 py-1 rounded-full"
+            }`}
             onClick={() => setActiveTab("preview")}
           >
             Preview
@@ -104,11 +126,12 @@ const CodeView = () => {
               <SandpackFileExplorer style={{ height: "75vh" }} />
               <SandpackCodeEditor
                 style={{ height: "75vh" }}
-                showTabs
+                showTabs={false}
                 showLineNumbers={true}
                 showInlineErrors
                 wrapContent
                 closableTabs
+                showRunButton={true}
               />
               {/* <MonacoEditor /> */}
             </>
