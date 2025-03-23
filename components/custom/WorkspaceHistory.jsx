@@ -13,14 +13,18 @@ const WorkspaceHistory = () => {
   const { messages, setMessages } = useContext(MessagesContext);
 
   useEffect(() => {
-    userDetail && GetAllWorkspace();
+    GetAllWorkspace();
   }, [userDetail, messages]);
 
   const GetAllWorkspace = async () => {
-    const result = await convex.query(api.workspace.GetAllWorkspace, {
-      userId: userDetail?._id,
-    });
-    setWorkspaceList(result);
+    if (userDetail) {
+      const result = await convex.query(api.workspace.GetAllWorkspace, {
+        userId: userDetail._id,
+      });
+      setWorkspaceList(result);
+    } else {
+      setWorkspaceList([]);
+    }
   };
 
   const { id } = useParams();

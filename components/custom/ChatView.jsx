@@ -86,6 +86,7 @@ const ChatView = () => {
 
     const token =
       Number(userDetail?.token) - Number(countToken(result.data.result));
+    setUserDetail({ ...userDetail, token: token });
     // Update token in database
     await UpdateToken({
       userId: userDetail?._id,
@@ -96,6 +97,10 @@ const ChatView = () => {
   };
 
   const onGenerate = (input) => {
+    if (userDetail?.token < 10) {
+      toast("You don't have enough tokens");
+      return;
+    }
     setMessages([
       ...messages,
       {

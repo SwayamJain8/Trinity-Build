@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Provider } from "@/app/provider";
 import { ConvexClientProvider } from "./ConvexClientProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata = {
   title: "Trinity Build – AI-Powered Website Creation",
@@ -16,7 +17,10 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <body cz-shortcut-listen="true">
         <ConvexClientProvider>
-          <Provider>{children}</Provider>
+          <Provider>
+            {children}
+            <Toaster />
+          </Provider>
         </ConvexClientProvider>
       </body>
     </html>

@@ -18,6 +18,8 @@ import { useParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { countToken } from "./ChatView";
 import { UserDetailContext } from "@/context/UserDetailContext";
+import SandpacPreviewClient from "./SandpacPreviewClient";
+import { ActionContext } from "@/context/ActionContext";
 
 const CodeView = () => {
   const { id } = useParams();
@@ -29,6 +31,7 @@ const CodeView = () => {
   const UpdateToken = useMutation(api.users.UpdateToken);
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const convex = useConvex();
+  const { action, setAction } = useContext(ActionContext);
 
   useEffect(() => {
     id && GetFiles();
@@ -43,6 +46,10 @@ const CodeView = () => {
     setFiles(mergedFiles);
     setLoading(false);
   };
+
+  useEffect(() => {
+    setActiveTab("preview");
+  }, [action]);
 
   useEffect(() => {
     if (messages?.length > 0) {
@@ -68,6 +75,7 @@ const CodeView = () => {
     await UpdateFiles({ workspaceId: id, files: aiResp?.files });
     const token =
       Number(userDetail?.token) - Number(countToken(JSON.stringify(aiResp)));
+    setUserDetail({ ...userDetail, token: token });
     // Update token in database
     await UpdateToken({
       userId: userDetail?._id,
@@ -79,8 +87,8 @@ const CodeView = () => {
 
   return (
     <div className="relative h-[83vh]">
-      <div className="bg-[#181818] w-full p-2 border-[0.5px] border-gray-800/50 rounded-t-md shadow-md">
-        <div className="flex items-center border-[0.5px] border-gray-800 shrink-0 bg-black/50 w-[130px] justify-center rounded-full shadow-sm">
+      <div className="bg-[#181818] w-full p-2.5 border-[0.5px] border-gray-800/50 rounded-t-md shadow-md h-13">
+        <div className="flex items-center border-[0.5px] border-gray-700 shrink-0 bg-black/50 w-[130px] justify-center rounded-full shadow-sm">
           <h2
             className={`text-sm font-medium cursor-pointer  ${
               activeTab === "code"
@@ -136,14 +144,7 @@ const CodeView = () => {
               {/* <MonacoEditor /> */}
             </>
           )}
-          {activeTab === "preview" && (
-            <div className="w-[100%]">
-              <SandpackPreview
-                style={{ height: "75vh", width: "100%" }}
-                showNavigator={true}
-              />
-            </div>
-          )}
+          {activeTab === "preview" && <SandpacPreviewClient />}
         </SandpackLayout>
       </SandpackProvider>
 

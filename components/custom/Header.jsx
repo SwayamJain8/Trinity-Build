@@ -2,17 +2,31 @@ import Image from "next/image";
 import React, { useContext, useState } from "react";
 import { Button } from "../ui/button";
 import { UserDetailContext } from "@/context/UserDetailContext";
-import { LogIn, LogOut } from "lucide-react";
+import { LogIn, LogOut, LucideDownload, Rocket } from "lucide-react";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import uuid4 from "uuid4";
+import { usePathname, useRouter } from "next/navigation";
+import { MessagesContext } from "@/context/MessagesContext";
+import { ActionContext } from "@/context/ActionContext";
 
 const Header = () => {
+  const router = useRouter();
   const [showName, setShowName] = useState(false);
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
+  const { messages, setMessages } = useContext(MessagesContext);
+  const { action, setAction } = useContext(ActionContext);
   const CreateUser = useMutation(api.users.CreateUser);
+  const path = usePathname();
+
+  const onActionBtn = (action) => {
+    setAction({
+      actionType: action,
+      timeStamp: Date.now(),
+    });
+  };
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
@@ -41,7 +55,7 @@ const Header = () => {
   return (
     <div className="py-4 pl-5 pr-8 flex justify-between items-center fixed top-0 left-0 right-0 z-50">
       <Image src={"/logo.png"} alt="logo" width="50" height="50" />
-      <h1 className="text-3xl font-bold italic text-slate-500 ml-30 tracking-widest py-2 px-5  border-b-2 rounded-b-3xl border-slate-500/50">
+      <h1 className="text-3xl font-bold italic text-slate-500 ml-10  tracking-widest py-2 px-5  border-b-2 rounded-b-3xl border-slate-500/50">
         <span className="text-slate-100">Trinity </span>Build
       </h1>
       <div className="flex gap-5">
@@ -60,6 +74,24 @@ const Header = () => {
           </>
         ) : (
           <div className="flex gap-3 items-center justify-center">
+            {path?.includes("workspace") && (
+              <div className="flex gap-3 items-center">
+                <Button
+                  variant="ghost"
+                  className="border-1 border-slate-800 cursor-pointer"
+                  onClick={() => onActionBtn("export")}
+                >
+                  <LucideDownload /> Export
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="bg-slate-800 cursor-pointer text-white"
+                  onClick={() => onActionBtn("deploy")}
+                >
+                  <Rocket /> Deploy
+                </Button>
+              </div>
+            )}
             {userDetail?.picture && (
               <div
                 onMouseEnter={() => setShowName(true)}
@@ -67,12 +99,12 @@ const Header = () => {
                 className="flex flex-col items-center justify-center"
               >
                 {showName && (
-                  <div className="absolute mt-18 bg-slate-600/25 text-slate-300 p-1.5 px-2 rounded-full shadow-lg text-xs tracking-wide ">
+                  <div className="absolute mt-18 bg-slate-600/25 text-slate-300 p-1.25 px-2 rounded-full shadow-lg text-xs tracking-wide ">
                     {userDetail?.name}
                   </div>
                 )}
                 <Image
-                  src={userDetail?.picture}
+                  src={userDetail?.picture || ""}
                   alt="profile"
                   width="40"
                   height="40"
@@ -80,19 +112,6 @@ const Header = () => {
                 />
               </div>
             )}
-            <Button
-              variant={"ghost"}
-              className="text-white cursor-pointer bg-slate-800"
-              onClick={() => {
-                localStorage.removeItem("user");
-                setUserDetail(null);
-                window.location.reload();
-                window.location.href = "/";
-              }}
-            >
-              <LogOut />
-              Sign Out
-            </Button>
           </div>
         )}
       </div>
