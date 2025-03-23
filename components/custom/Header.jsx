@@ -53,11 +53,17 @@ const Header = () => {
   });
 
   return (
-    <div className="py-4 pl-5 pr-8 flex justify-between items-center fixed top-0 left-0 right-0 z-50">
+    <div className="py-4 pb-2 pl-5 pr-7 flex justify-between items-center fixed top-0 left-0 right-0 z-50 border-b-2 rounded-b-3xl border-slate-500/50">
       <Image src={"/logo.png"} alt="logo" width="50" height="50" />
-      <h1 className="text-3xl font-bold italic text-slate-500 ml-10  tracking-widest py-2 px-5  border-b-2 rounded-b-3xl border-slate-500/50">
-        <span className="text-slate-100">Trinity </span>Build
+      <h1 className="text-3xl font-bold italic text-slate-500 ml-25 tracking-widest py-2 px-5 group transition-colors duration-500 ease-in-out">
+        <span className="text-slate-100 group-hover:text-slate-500 transition-colors duration-500 ease-in-out">
+          Trinity
+        </span>{" "}
+        <span className="text-slate-500 group-hover:text-slate-100 transition-colors duration-500 ease-in-out">
+          Build
+        </span>
       </h1>
+
       <div className="flex gap-5">
         {!userDetail?.name ? (
           <>
@@ -74,7 +80,7 @@ const Header = () => {
           </>
         ) : (
           <div className="flex gap-3 items-center justify-center">
-            {path?.includes("workspace") && (
+            {path?.includes("workspace") ? (
               <div className="flex gap-3 items-center">
                 <Button
                   variant="ghost"
@@ -91,6 +97,21 @@ const Header = () => {
                   <Rocket /> Deploy
                 </Button>
               </div>
+            ) : (
+              <Button
+                variant={"ghost"}
+                className="text-white cursor-pointer bg-slate-800"
+                onClick={() => {
+                  localStorage.removeItem("user");
+                  setUserDetail(null);
+                  setMessages([]);
+                  router.replace("/", { scroll: false });
+                  router.refresh();
+                }}
+              >
+                <LogOut />
+                Sign Out
+              </Button>
             )}
             {userDetail?.picture && (
               <div
@@ -99,7 +120,7 @@ const Header = () => {
                 className="flex flex-col items-center justify-center"
               >
                 {showName && (
-                  <div className="absolute mt-18 bg-slate-600/25 text-slate-300 p-1.25 px-2 rounded-full shadow-lg text-xs tracking-wide ">
+                  <div className="absolute mt-18 bg-slate-600/25 text-slate-300 p-1.25 px-3 rounded-full shadow-lg text-xs tracking-wide ">
                     {userDetail?.name}
                   </div>
                 )}

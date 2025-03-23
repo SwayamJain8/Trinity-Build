@@ -1,9 +1,10 @@
 import { HelpCircle, LogOut, Settings, Wallet } from "lucide-react";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import { MessagesContext } from "@/context/MessagesContext";
+import SignInDialog from "./SignInDialog";
 
 const SideBarFooter = () => {
   const router = useRouter();
@@ -11,14 +12,14 @@ const SideBarFooter = () => {
   const { messages, setMessages } = useContext(MessagesContext);
 
   const options = [
-    {
-      name: "Settings",
-      icon: Settings,
-    },
-    {
-      name: "Help Center",
-      icon: HelpCircle,
-    },
+    // {
+    //   name: "Settings",
+    //   icon: Settings,
+    // },
+    // {
+    //   name: "Help Center",
+    //   icon: HelpCircle,
+    // },
     {
       name: "My Subscription",
       icon: Wallet,
@@ -42,20 +43,49 @@ const SideBarFooter = () => {
 
     router.push(option.path);
   };
+  const path = usePathname();
+  const [openDialog, setOpenDialog] = useState(false);
 
+  const show = (option) => {
+    if (!userDetail?.name) {
+      setOpenDialog(true);
+      return;
+    }
+    router.push(option.path);
+  };
   return (
-    <div className="p-2 mb-2">
-      {options.map((option, index) => (
-        <Button
-          variant="ghost"
-          key={index}
-          className="w-full flex justify-start my-2"
-          onClick={() => optionClick(option)}
-        >
-          <option.icon className="w-5 h-5" />
-          <span className="text-sm">{option.name}</span>
-        </Button>
-      ))}
+    <div className="p-2 px-3 -mb-2">
+      {options.map((option, index) =>
+        path?.includes("workspace") && option.name == "Sign Out" ? (
+          <Button
+            variant="ghost"
+            key={index}
+            className="w-full flex justify-start my-3 bg-slate-800"
+            onClick={() => optionClick(option)}
+          >
+            <option.icon className="w-5 h-5" />
+            <span className="text-md">{option.name}</span>
+          </Button>
+        ) : (
+          option.name == "My Subscription" && (
+            <>
+              <Button
+                variant="ghost"
+                key={index}
+                className="w-full flex justify-start my-3 bg-slate-800"
+                onClick={() => show(option)}
+              >
+                <option.icon className="w-5 h-5" />
+                <span className="text-md">{option.name}</span>
+              </Button>
+              <SignInDialog
+                openDialog={openDialog}
+                closeDialog={(v) => setOpenDialog(v)}
+              />
+            </>
+          )
+        )
+      )}
     </div>
   );
 };
