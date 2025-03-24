@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { Button } from "../ui/button";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import {
+  ArrowUpRight,
   Loader2Icon,
   LogIn,
   LogOut,
@@ -100,7 +101,7 @@ const Header = () => {
                   className="border-1 border-slate-800 cursor-pointer"
                   onClick={() => onActionBtn("export")}
                 >
-                  <LucideDownload /> Export
+                  <ArrowUpRight /> Export
                 </Button>
                 <Button
                   variant="ghost"

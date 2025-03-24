@@ -38,6 +38,7 @@ const CodeView = () => {
   }, [id]);
 
   const GetFiles = async () => {
+    setActiveTab("code");
     setLoading(true);
     const result = await convex.query(api.workspace.GetWorkspace, {
       workspaceId: id,
@@ -45,6 +46,7 @@ const CodeView = () => {
     const mergedFiles = { ...Lookup.DEFAULT_FILE, ...result?.fileData };
     setFiles(mergedFiles);
     setLoading(false);
+    setActiveTab("preview");
   };
 
   useEffect(() => {

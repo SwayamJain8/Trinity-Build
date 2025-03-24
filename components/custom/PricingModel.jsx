@@ -29,24 +29,22 @@ const PricingModel = () => {
         <div
           key={index}
           className="border p-7 pb-5 rounded-xl flex flex-col gap-3 "
-          onClick={() => {
-            setSelectedOption(pricing);
-            // console.log(pricing.value);
-          }}
         >
           <h2 className="font-bold text-2xl">{pricing.name}</h2>
           <h2 className="font-medium text-lg">{pricing.tokens} Tokens</h2>
           <p className="text-gray-400">{pricing.desc}</p>
 
           <h2 className="font-bold text-4xl text-center mt-6">
-            <IndianRupeeIcon className="inline" />
-            {pricing.price}
+            ${pricing.price}
           </h2>
-          {/* <Button> Upgrade to {pricing.name} </Button> */}
           {pricing.price != 0 ? (
             <PayPalButtons
               disabled={!userDetail}
               style={{ layout: "horizontal" }}
+              onClick={() => {
+                setSelectedOption(pricing);
+                // console.log(pricing.value);
+              }}
               onApprove={() => onPaymentSuccess()}
               onCancel={() => console.log("Payment cancelled")}
               createOrder={(data, actions) => {
@@ -69,7 +67,7 @@ const PricingModel = () => {
               onClick={() => router.push("/")}
             >
               {" "}
-              Get Started
+              Get Started For Free
             </Button>
           )}
         </div>

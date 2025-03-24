@@ -32,6 +32,7 @@ const SandpacPreviewClient = () => {
       ref={previewRef}
       style={{ height: "75vh", width: "100%" }}
       showNavigator={true}
+      showOpenInCodeSandbox={false}
     />
   );
 };
