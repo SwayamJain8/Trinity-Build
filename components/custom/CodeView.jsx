@@ -62,6 +62,7 @@ const CodeView = () => {
   }, [messages]);
 
   const GenerateAiCode = async () => {
+    setActiveTab("code");
     setLoading(true);
     const PROMPT = JSON.stringify(messages) + " " + Prompt.CODE_GEN_PROMPT;
     const result = await axios.post("/api/gen-ai-code", {
@@ -81,8 +82,8 @@ const CodeView = () => {
       userId: userDetail?._id,
       token: token,
     });
-    setActiveTab("code");
     setLoading(false);
+    setActiveTab("preview");
   };
 
   return (

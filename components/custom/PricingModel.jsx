@@ -6,8 +6,10 @@ import { PayPalButtons } from "@paypal/react-paypal-js";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { useRouter } from "next/navigation";
 
 const PricingModel = () => {
+  const router = useRouter();
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const [selectedOption, setSelectedOption] = useState();
   const UpdateToken = useMutation(api.users.UpdateToken);
@@ -22,11 +24,11 @@ const PricingModel = () => {
   };
 
   return (
-    <div className="mt-10 grid grid-cols-4 gap-5">
+    <div className="mt-7 mr-10 grid grid-cols-4 gap-5">
       {Lookup.PRICING_OPTIONS.map((pricing, index) => (
         <div
           key={index}
-          className="border p-7 rounded-xl flex flex-col gap-3 "
+          className="border p-7 pb-5 rounded-xl flex flex-col gap-3 "
           onClick={() => {
             setSelectedOption(pricing);
             // console.log(pricing.value);
@@ -41,24 +43,35 @@ const PricingModel = () => {
             {pricing.price}
           </h2>
           {/* <Button> Upgrade to {pricing.name} </Button> */}
-          <PayPalButtons
-            disabled={!userDetail}
-            style={{ layout: "horizontal" }}
-            onApprove={() => onPaymentSuccess()}
-            onCancel={() => console.log("Payment cancelled")}
-            createOrder={(data, actions) => {
-              return actions.order.create({
-                purchase_units: [
-                  {
-                    amount: {
-                      value: pricing.price,
-                      currency_code: "USD",
+          {pricing.price != 0 ? (
+            <PayPalButtons
+              disabled={!userDetail}
+              style={{ layout: "horizontal" }}
+              onApprove={() => onPaymentSuccess()}
+              onCancel={() => console.log("Payment cancelled")}
+              createOrder={(data, actions) => {
+                return actions.order.create({
+                  purchase_units: [
+                    {
+                      amount: {
+                        value: pricing.price,
+                        currency_code: "USD",
+                      },
                     },
-                  },
-                ],
-              });
-            }}
-          />
+                  ],
+                });
+              }}
+            />
+          ) : (
+            <Button
+              className="bg-slate-800 text-white text-md mt-3 cursor-pointer"
+              variant={"ghost"}
+              onClick={() => router.push("/")}
+            >
+              {" "}
+              Get Started
+            </Button>
+          )}
         </div>
       ))}
     </div>

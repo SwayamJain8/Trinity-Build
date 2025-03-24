@@ -47,10 +47,11 @@ const SideBarFooter = () => {
   const [openDialog, setOpenDialog] = useState(false);
 
   const show = (option) => {
-    if (!userDetail?.name) {
-      setOpenDialog(true);
-      return;
-    }
+    // if (!userDetail?.name) {
+    //   setOpenDialog(true);
+    //   return;
+    // }
+    // router.push(option.path);
     router.push(option.path);
   };
   return (
@@ -78,10 +79,10 @@ const SideBarFooter = () => {
                 <option.icon className="w-5 h-5" />
                 <span className="text-md">{option.name}</span>
               </Button>
-              <SignInDialog
+              {/* <SignInDialog
                 openDialog={openDialog}
                 closeDialog={(v) => setOpenDialog(v)}
-              />
+              /> */}
             </div>
           )
         )

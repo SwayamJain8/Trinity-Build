@@ -2,7 +2,13 @@ import Image from "next/image";
 import React, { useContext, useState } from "react";
 import { Button } from "../ui/button";
 import { UserDetailContext } from "@/context/UserDetailContext";
-import { LogIn, LogOut, LucideDownload, Rocket } from "lucide-react";
+import {
+  Loader2Icon,
+  LogIn,
+  LogOut,
+  LucideDownload,
+  Rocket,
+} from "lucide-react";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useMutation } from "convex/react";
@@ -20,6 +26,7 @@ const Header = () => {
   const { action, setAction } = useContext(ActionContext);
   const CreateUser = useMutation(api.users.CreateUser);
   const path = usePathname();
+  const [loading, setLoading] = useState(false);
 
   const onActionBtn = (action) => {
     setAction({
@@ -30,6 +37,7 @@ const Header = () => {
 
   const googleLogin = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
+      setLoading(true);
       const userInfo = await axios.get(
         "https://www.googleapis.com/oauth2/v3/userinfo",
         { headers: { Authorization: "Bearer " + tokenResponse?.access_token } }
@@ -47,7 +55,7 @@ const Header = () => {
         localStorage.setItem("user", JSON.stringify(user));
       }
       setUserDetail(userInfo?.data);
-      // Save this inside our database
+      setLoading(false);
     },
     onError: (errorResponse) => console.log(errorResponse),
   });
@@ -74,8 +82,13 @@ const Header = () => {
                 googleLogin();
               }}
             >
-              <LogIn />
-              Sign In
+              {loading ? (
+                <Loader2Icon className="animate-spin mr-2" />
+              ) : (
+                <>
+                  <LogIn /> Sign In
+                </>
+              )}
             </Button>
           </>
         ) : (
