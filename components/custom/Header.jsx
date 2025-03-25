@@ -94,39 +94,20 @@ const Header = () => {
           </>
         ) : (
           <div className="flex gap-3 items-center justify-center">
-            {path?.includes("workspace") ? (
-              <div className="flex gap-3 items-center">
-                <Button
-                  variant="ghost"
-                  className="border-1 border-slate-800 cursor-pointer"
-                  onClick={() => onActionBtn("export")}
-                >
-                  <ArrowUpRight /> Export
-                </Button>
-                <Button
-                  variant="ghost"
-                  className="bg-slate-800 cursor-pointer text-white"
-                  onClick={() => onActionBtn("deploy")}
-                >
-                  <Rocket /> Deploy
-                </Button>
-              </div>
-            ) : (
-              <Button
-                variant={"ghost"}
-                className="text-white cursor-pointer bg-slate-800"
-                onClick={() => {
-                  localStorage.removeItem("user");
-                  setUserDetail(null);
-                  setMessages([]);
-                  router.replace("/", { scroll: false });
-                  router.refresh();
-                }}
-              >
-                <LogOut />
-                Sign Out
-              </Button>
-            )}
+            <Button
+              variant={"ghost"}
+              className="text-white cursor-pointer bg-slate-800"
+              onClick={() => {
+                localStorage.removeItem("user");
+                setUserDetail(null);
+                setMessages([]);
+                router.replace("/", { scroll: false });
+                router.refresh();
+              }}
+            >
+              <LogOut />
+              Sign Out
+            </Button>
             {userDetail?.picture && (
               <div
                 onMouseEnter={() => setShowName(true)}

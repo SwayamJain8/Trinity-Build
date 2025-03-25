@@ -6,7 +6,8 @@ export default {
   GUIDELINES:
   - Tell user what your are building
   - response less than 15 lines. 
-  - Skip code examples and commentary'
+  - Skip code examples and commentary
+  - Use emojis whenever possible'
 `,
 
   CODE_GEN_PROMPT: dedent`

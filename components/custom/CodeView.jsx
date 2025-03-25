@@ -13,13 +13,14 @@ import {
 } from "@codesandbox/sandpack-react";
 import axios from "axios";
 import { useConvex, useMutation } from "convex/react";
-import { Loader2Icon } from "lucide-react";
+import { ArrowUpRight, Loader2Icon, Rocket } from "lucide-react";
 import { useParams } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import { countToken } from "./ChatView";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import SandpacPreviewClient from "./SandpacPreviewClient";
 import { ActionContext } from "@/context/ActionContext";
+import { Button } from "../ui/button";
 
 const CodeView = () => {
   const { id } = useParams();
@@ -46,7 +47,7 @@ const CodeView = () => {
     const mergedFiles = { ...Lookup.DEFAULT_FILE, ...result?.fileData };
     setFiles(mergedFiles);
     setLoading(false);
-    setActiveTab("preview");
+    // setActiveTab("preview");
   };
 
   useEffect(() => {
@@ -85,12 +86,18 @@ const CodeView = () => {
       token: token,
     });
     setLoading(false);
-    setActiveTab("preview");
+  };
+
+  const onActionBtn = (action) => {
+    setAction({
+      actionType: action,
+      timeStamp: Date.now(),
+    });
   };
 
   return (
     <div className="relative h-[83vh]">
-      <div className="bg-[#181818] w-full p-2.5 border-[0.5px] border-gray-800/50 rounded-t-md shadow-md h-13">
+      <div className="bg-[#181818] w-full p-2.5 border-[0.5px] border-gray-800/50 rounded-t-md shadow-md h-13 flex justify-between">
         <div className="flex items-center border-[0.5px] border-gray-700 shrink-0 bg-black/50 w-[130px] justify-center rounded-full shadow-sm">
           <h2
             className={`text-sm font-medium cursor-pointer  ${
@@ -113,6 +120,24 @@ const CodeView = () => {
             Preview
           </h2>
         </div>
+        {activeTab == "preview" && (
+          <div className="flex gap-3 items-center mr-1">
+            <Button
+              variant="ghost"
+              className="border-1 border-slate-800 cursor-pointer"
+              onClick={() => onActionBtn("export")}
+            >
+              <ArrowUpRight /> Export
+            </Button>
+            <Button
+              variant="ghost"
+              className="bg-slate-800 cursor-pointer text-white"
+              onClick={() => onActionBtn("deploy")}
+            >
+              <Rocket /> Deploy
+            </Button>
+          </div>
+        )}
       </div>
 
       <SandpackProvider

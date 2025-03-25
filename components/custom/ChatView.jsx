@@ -85,9 +85,13 @@ const ChatView = () => {
       ],
     });
 
-    const token =
+    let token =
       Number(userDetail?.token) - Number(countToken(result.data.result));
+    if (token < 0) {
+      token = 0;
+    }
     setUserDetail({ ...userDetail, token: token });
+
     // Update token in database
     await UpdateToken({
       userId: userDetail?._id,

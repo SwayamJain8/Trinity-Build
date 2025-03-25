@@ -81,8 +81,8 @@ export default config;
   PRICING_OPTIONS: [
     {
       name: "Free",
-      tokens: "5K",
-      value: 5000,
+      tokens: "10K",
+      value: 10000,
       desc: "Best for hobbyists and casual users exploring AI with minimal usage.",
       price: 0,
     },
