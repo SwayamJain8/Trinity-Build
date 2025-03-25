@@ -21,6 +21,7 @@ import { UserDetailContext } from "@/context/UserDetailContext";
 import SandpacPreviewClient from "./SandpacPreviewClient";
 import { ActionContext } from "@/context/ActionContext";
 import { Button } from "../ui/button";
+import { BtnLoadingContext } from "@/context/BtnLoadingContext";
 
 const CodeView = () => {
   const { id } = useParams();
@@ -33,6 +34,7 @@ const CodeView = () => {
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const convex = useConvex();
   const { action, setAction } = useContext(ActionContext);
+  const { btnLoading, setBtnLoading } = useContext(BtnLoadingContext);
 
   useEffect(() => {
     id && GetFiles();
@@ -89,6 +91,7 @@ const CodeView = () => {
   };
 
   const onActionBtn = (action) => {
+    setBtnLoading(true);
     setAction({
       actionType: action,
       timeStamp: Date.now(),
@@ -102,7 +105,7 @@ const CodeView = () => {
           <h2
             className={`text-sm font-medium cursor-pointer  ${
               activeTab === "code"
-                ? "text-white bg-slate-700 px-3 py-1 rounded-l-full shadow-md"
+                ? "text-white bg-slate-700 h-full px-3 py-1 rounded-l-full shadow-md"
                 : "text-gray-400 hover:text-white px-3 py-1 rounded-full"
             }`}
             onClick={() => setActiveTab("code")}
@@ -112,7 +115,7 @@ const CodeView = () => {
           <h2
             className={`text-sm font-medium cursor-pointer  ${
               activeTab === "preview"
-                ? "text-white bg-slate-700 px-3 py-1 rounded-r-full  shadow-md"
+                ? "text-white bg-slate-700 h-full px-3 py-1 rounded-r-full  shadow-md"
                 : "text-gray-400 hover:text-white px-3 py-1 rounded-full"
             }`}
             onClick={() => setActiveTab("preview")}
@@ -127,14 +130,26 @@ const CodeView = () => {
               className="border-1 border-slate-800 cursor-pointer"
               onClick={() => onActionBtn("export")}
             >
-              <ArrowUpRight /> Export
+              {btnLoading && action?.actionType == "export" ? (
+                <Loader2Icon className="animate-spin" />
+              ) : (
+                <>
+                  <ArrowUpRight /> Export
+                </>
+              )}
             </Button>
             <Button
               variant="ghost"
               className="bg-slate-800 cursor-pointer text-white"
               onClick={() => onActionBtn("deploy")}
             >
-              <Rocket /> Deploy
+              {btnLoading && action?.actionType == "deploy" ? (
+                <Loader2Icon className="animate-spin" />
+              ) : (
+                <>
+                  <Rocket /> Deploy
+                </>
+              )}
             </Button>
           </div>
         )}

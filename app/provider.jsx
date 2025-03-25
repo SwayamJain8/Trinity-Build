@@ -13,11 +13,13 @@ import Header from "@/components/custom/Header";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { ActionContext } from "@/context/ActionContext";
 import { useRouter } from "next/navigation";
+import { BtnLoadingContext } from "@/context/BtnLoadingContext";
 
 export function Provider({ children, ...props }) {
   const [messages, setMessages] = React.useState();
   const [userDetail, setUserDetail] = React.useState();
   const [action, setAction] = React.useState();
+  const [btnLoading, setBtnLoading] = React.useState(false);
   const convex = useConvex();
   const router = useRouter();
 
@@ -50,18 +52,20 @@ export function Provider({ children, ...props }) {
         <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
           <MessagesContext.Provider value={{ messages, setMessages }}>
             <ActionContext.Provider value={{ action, setAction }}>
-              <NextThemesProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-              >
-                <Header />
-                <SidebarProvider defaultOpen={true}>
-                  <AppSidebar />
-                  {children}
-                </SidebarProvider>
-              </NextThemesProvider>
+              <BtnLoadingContext.Provider value={{ btnLoading, setBtnLoading }}>
+                <NextThemesProvider
+                  attribute="class"
+                  defaultTheme="system"
+                  enableSystem
+                  disableTransitionOnChange
+                >
+                  <Header />
+                  <SidebarProvider defaultOpen={true}>
+                    <AppSidebar />
+                    {children}
+                  </SidebarProvider>
+                </NextThemesProvider>
+              </BtnLoadingContext.Provider>
             </ActionContext.Provider>
           </MessagesContext.Provider>
         </UserDetailContext.Provider>

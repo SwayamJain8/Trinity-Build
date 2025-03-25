@@ -115,7 +115,7 @@ const Header = () => {
                 className="flex flex-col items-center justify-center"
               >
                 {showName && (
-                  <div className="absolute mt-18 bg-slate-600/25 text-slate-300 p-1.25 px-3 rounded-full shadow-lg text-xs tracking-wide ">
+                  <div className="absolute mt-18 bg-slate-900 text-slate-300 p-1.25 px-3 rounded-full shadow-lg text-xs tracking-wide ">
                     {userDetail?.name}
                   </div>
                 )}
@@ -124,7 +124,7 @@ const Header = () => {
                   alt="profile"
                   width="40"
                   height="40"
-                  className="rounded-full border-2 border-slate-700"
+                  className="rounded-full border-2 border-slate-900 hover:border-slate-700"
                 />
               </div>
             )}

@@ -1,4 +1,5 @@
 import { ActionContext } from "@/context/ActionContext";
+import { BtnLoadingContext } from "@/context/BtnLoadingContext";
 import { SandpackPreview, useSandpack } from "@codesandbox/sandpack-react";
 import React, { useContext, useEffect, useRef } from "react";
 
@@ -6,12 +7,15 @@ const SandpacPreviewClient = () => {
   const previewRef = useRef();
   const { sandpack } = useSandpack();
   const { action, setAction } = useContext(ActionContext);
+  const { btnLoading, setBtnLoading } = useContext(BtnLoadingContext);
 
   useEffect(() => {
     GetSandpackClient();
   }, [sandpack && action]);
 
   const GetSandpackClient = async () => {
+    setBtnLoading(true);
+
     const client = previewRef.current?.getClient();
     if (client) {
       const result = await client.getCodeSandboxURL();
@@ -25,6 +29,7 @@ const SandpacPreviewClient = () => {
         window.open(result?.editorUrl);
       }
     }
+    setBtnLoading(false);
   };
 
   return (

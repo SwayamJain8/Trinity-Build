@@ -4,7 +4,7 @@ import { MessagesContext } from "@/context/MessagesContext";
 import { UserDetailContext } from "@/context/UserDetailContext";
 import Colors from "@/data/Colors";
 import Lookup from "@/data/Lookup";
-import { ArrowRight, Wand2 } from "lucide-react";
+import { ArrowRight, Loader2Icon, Wand2 } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import SignInDialog from "./SignInDialog";
 import { useMutation } from "convex/react";
@@ -20,11 +20,13 @@ const Hero = () => {
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const [openDialog, setOpenDialog] = useState(false);
   const CreateWorkspace = useMutation(api.workspace.CreateWorkspace);
+  const [loading, setLoading] = useState(false);
   const onGenerate = async (input) => {
     if (!userDetail?.name) {
       setOpenDialog(true);
       return;
     }
+    setLoading(true);
     if (userDetail?.token < 10) {
       toast("You don't have enough tokens");
       return;
@@ -39,6 +41,7 @@ const Hero = () => {
       messages: [msg],
     });
     router.push(`/workspace/${workspaceId}`);
+    setLoading(false);
   };
 
   return (
@@ -63,7 +66,7 @@ const Hero = () => {
               className="bg-slate-800 p-5 h-10 w-10 rounded-md cursor-pointer"
               onClick={() => onGenerate(userInput)}
             >
-              <Wand2 />
+              {loading ? <Loader2Icon className="animate-spin" /> : <Wand2 />}
             </Button>
           )}
         </div>
