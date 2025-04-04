@@ -29,8 +29,8 @@ const MobileBlocker = () => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-90 text-white text-center p-5 z-[9999] w-full h-full">
       <div className="text-sm font-semibold">
-        This website is not yet optimized for mobile devices. <br />
-        Please open it on a desktop for the best experience.
+        This website is not yet optimized for small screen devices. <br />
+        Please open it on a larger screen for the best experience.
       </div>
     </div>
   );
