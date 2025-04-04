@@ -2,6 +2,7 @@ import "./globals.css";
 import { Provider } from "@/app/provider";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { Toaster } from "@/components/ui/sonner";
+import MobileBlocker from "@/components/MobileBlocker";
 
 export const metadata = {
   title: "Trinity Build – AI-Powered Web App Builder",
@@ -16,6 +17,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body cz-shortcut-listen="true">
+        <MobileBlocker />
         <ConvexClientProvider>
           <Provider>
             {children}

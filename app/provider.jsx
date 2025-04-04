@@ -14,6 +14,7 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { ActionContext } from "@/context/ActionContext";
 import { useRouter } from "next/navigation";
 import { BtnLoadingContext } from "@/context/BtnLoadingContext";
+import MobileBlocker from "@/components/MobileBlocker";
 
 export function Provider({ children, ...props }) {
   const [messages, setMessages] = React.useState();
@@ -43,33 +44,38 @@ export function Provider({ children, ...props }) {
   };
 
   return (
-    <GoogleOAuthProvider
-      clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID_KEY}
-    >
-      <PayPalScriptProvider
-        options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID }}
+    <>
+      {/* <MobileBlocker /> */}
+      <GoogleOAuthProvider
+        clientId={process.env.NEXT_PUBLIC_GOOGLE_AUTH_CLIENT_ID_KEY}
       >
-        <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
-          <MessagesContext.Provider value={{ messages, setMessages }}>
-            <ActionContext.Provider value={{ action, setAction }}>
-              <BtnLoadingContext.Provider value={{ btnLoading, setBtnLoading }}>
-                <NextThemesProvider
-                  attribute="class"
-                  defaultTheme="system"
-                  enableSystem
-                  disableTransitionOnChange
+        <PayPalScriptProvider
+          options={{ clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID }}
+        >
+          <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
+            <MessagesContext.Provider value={{ messages, setMessages }}>
+              <ActionContext.Provider value={{ action, setAction }}>
+                <BtnLoadingContext.Provider
+                  value={{ btnLoading, setBtnLoading }}
                 >
-                  <Header />
-                  <SidebarProvider defaultOpen={true}>
-                    <AppSidebar />
-                    {children}
-                  </SidebarProvider>
-                </NextThemesProvider>
-              </BtnLoadingContext.Provider>
-            </ActionContext.Provider>
-          </MessagesContext.Provider>
-        </UserDetailContext.Provider>
-      </PayPalScriptProvider>
-    </GoogleOAuthProvider>
+                  <NextThemesProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                  >
+                    <Header />
+                    <SidebarProvider defaultOpen={true}>
+                      <AppSidebar />
+                      {children}
+                    </SidebarProvider>
+                  </NextThemesProvider>
+                </BtnLoadingContext.Provider>
+              </ActionContext.Provider>
+            </MessagesContext.Provider>
+          </UserDetailContext.Provider>
+        </PayPalScriptProvider>
+      </GoogleOAuthProvider>
+    </>
   );
 }
